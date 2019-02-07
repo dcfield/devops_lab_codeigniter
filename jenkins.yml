@@ -1,0 +1,47 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: Add Oracle Java Repository
+      become: yes
+      apt_repository: repo='ppa:webupd8team/java'
+
+    - name: Accept Java 8 License
+      become: yes
+      debconf: name='oracle-java8-installer' question='shared/accepted-oracle-license-v1-1' value='true' vtype='select'
+
+    - name: Install Oracle Java 8
+      become: yes
+      apt: name={{item}} state=latest
+      with_items:
+        - oracle-java8-installer
+        - ca-certificates
+        - oracle-java8-set-default
+
+    - name: Install jenkins repo key
+      apt_key: 
+        url: https://pkg.jenkins.io/debian/jenkins-ci.org.key
+        state: present
+
+    - name: Add the Jenkins repo
+      apt_repository:
+        repo: 'deb http://pkg.jenkins.io/debian-stable binary/'
+        state: present
+
+    - name: Install Jenkins
+      apt:
+        name: jenkins
+        state: present
+        update_cache: yes
+
+    - name: Start and enable jenkins service
+      service:
+        name: jenkins
+        state: started
+        enabled: yes
+        
+    - name: Install packages
+      apt: name={{ item }} state=present
+      with_items:
+        - git
+        - phpunit
+         
