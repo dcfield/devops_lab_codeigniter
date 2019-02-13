@@ -44,4 +44,5 @@
       with_items:
         - git
         - phpunit
+        - php7.2-mysql
          
