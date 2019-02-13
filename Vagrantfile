@@ -7,6 +7,9 @@ Vagrant.configure("2") do |config|
   config.vm.define "client", primary: true do |client|
     client.vm.hostname="client"
     client.vm.network "private_network", ip: "192.168.33.10"
+    client.vm.provision "ansible" do |ansible|
+      ansible.playbook="client.yml"
+    end
   end
 
   # VM for our apache server
