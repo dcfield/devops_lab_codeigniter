@@ -2,6 +2,11 @@
   become: yes
 
   handlers:
+    - name: yum update
+      yum:
+        name: '*'
+        state: latest
+    
     - name: restart Apache
       service: name=httpd state=restarted
 

@@ -8,7 +8,13 @@
     temp_dir: /tmp
     binary_dir: "{{ temp_dir }}/git-{{ version }}"
     url: "https://www.kernel.org/pub/software/scm/git/git-{{ version }}.tar.gz"
+    
   tasks:
+    - name: yum update
+      yum:
+        name: '*'
+        state: latest
+
     - name: Install yum package
       yum:
         name:
